@@ -1,0 +1,35 @@
+class Solution {
+public:
+    long long solve(vector<int>& coins, int amount, int i, int n,vector<vector<long>>&dp) {
+        if(dp[i][amount]!=-1)
+        {
+            return dp[i][amount];
+        }
+        if (amount == 0) {
+            return dp[i][amount]=0;
+        }
+        if (i >= n) {
+            return dp[i][amount]=1e6;
+        }
+        if (amount < 0) {
+           return dp[i][amount]=1e6;
+        }
+        long long op1 = INT_MAX;
+        if (coins[i] <= amount) {
+            op1 = 1 + solve(coins, amount - coins[i], i, n,dp);
+        }
+        long long op2 = solve(coins, amount, i + 1, n,dp);
+        dp[i][amount]= min(op1, op2);
+        return dp[i][amount];
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+         vector<vector<long>>dp(n+1,vector<long>(100001,-1));
+        long long p = solve(coins, amount, 0, n,dp);
+        if (p >= 1e6) {
+            return -1;
+        }
+        return (int)p;
+    }
+};
