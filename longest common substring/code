@@ -1,0 +1,35 @@
+class Solution {
+public:
+int solve(vector<int> &S1, vector<int> &S2, int n, int m,vector<vector<int>>&dp)
+    {
+        if(m==0 || n==0)
+        {
+            return 0;
+        }
+        if(dp[n][m]!=-1)
+        {
+            return dp[n][m];
+        }
+        int count=0;
+        
+        int i=n-1,j=m-1;
+        
+        while(i>=0 && j>=0 && S1[i]==S2[j])
+        {
+            i-=1;
+            j-=1;
+            count+=1;
+        }
+        int op1=solve(S1,S2,n-1,m,dp);
+        int op2=solve(S1,S2,n,m-1,dp);
+        int excl = max(op1,op2);
+        dp[n][m]=max(count,excl);
+        return dp[n][m];
+    }
+    int findLength(vector<int>& nums1, vector<int>& nums2) {
+        int n=nums1.size();
+        int m=nums2.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        return solve(nums1,nums2,n,m,dp);
+    }
+};
