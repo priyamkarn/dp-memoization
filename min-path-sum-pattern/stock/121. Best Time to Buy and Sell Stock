@@ -1,0 +1,30 @@
+class Solution {
+public:
+int solve(vector<int>& prices,int i,int n,vector<int> &dp)
+{
+    if(i>=n)
+ {
+     return 0;
+ }
+ if(dp[i]!=-1)
+ {
+     return dp[i];
+ }
+ int ans=INT_MIN;
+ for(int j=i+1;j<n;j++)
+ {
+     if(prices[j]>prices[i])
+     {
+         ans=max(ans,prices[j]-prices[i]);
+     }
+ }
+ int op2=solve(prices,i+1,n,dp);
+ dp[i]=max(ans,op2);
+ return dp[i];
+}
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<int>dp(n+1,-1);
+        return solve(prices,0,prices.size(),dp);
+    }
+};
